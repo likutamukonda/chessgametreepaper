@@ -17,16 +17,16 @@ About 1.4% of the positions carry castling rights that only exist in Chess960. T
 `v2/lc0_kaggle.ipynb` asks Leela Chess Zero how good the position is after each legal move, at a ladder of increasing node counts.
 
 - **Sample.** Positions are taken in a fixed, seeded order that keeps the piece-count mix of the whole file, so wherever a run stops, the finished positions are a fair sample.
-- **Ladder.** 25 node counts, evenly spaced on a log scale from 1 node (the network alone) to the top level: 1, 2, 3 ... 8, 10, 13, 18 ... 750, 1000 (eight per factor of ten). Lc0 keeps its search tree between the readings, so the whole ladder costs about as much as its top level plus roughly 0.02 s per reading. Lc0 does not stop on exactly the node count asked for (it overshoots by a few per cent, and by one or two nodes at the very bottom), so use the `nodes` column, not `target_nodes`, as the x-axis.
-- **Top level.** `TOP_NODES = 1000` by default. On the two T4s of the first run this leaves room for more than 1,000 positions in 8 hours (about 1,200, estimated). Setting `TOP_NODES = None` lets a short calibration pick the highest top level that fits `TARGET_POSITIONS`.
+- **Ladder.** 25 node counts, evenly spaced on a log scale from 1 node (the network alone) to the top level of 10,000: 1, 2, 3, 4, 5, 7, 10, 15, 22 ... 3162, 4642, 6813, 10000 (six per factor of ten). Lc0 keeps its search tree between the readings, so the whole ladder costs about as much as its top level plus roughly 0.02 s per reading. Lc0 does not stop on exactly the node count asked for (it overshoots by a few per cent, and by one or two nodes at the very bottom), so use the `nodes` column, not `target_nodes`, as the x-axis.
+- **Top level and time.** `TOP_NODES = 10_000` and `TOTAL_BUDGET_HOURS = 8.5` by default. The run takes positions in their seeded order until the budget is nearly used up. On the two T4s of the first run (about 8 s per move search at 10,000 nodes) that is roughly 250 positions (estimate). `TOP_NODES = None` lets a short calibration pick the highest top level that fits `TARGET_POSITIONS` instead.
 - **Engine settings.** Lc0 0.32 with the BT4 network, score type W-L, smart pruning off (a search is never stopped before its node target).
 - **Safety.** Results are written after every position, and the run stops by itself before the time budget ends. A later session can continue an earlier run.
 
 ### Running it
 
 1. Import the notebook into Kaggle. Choose the accelerator *GPU T4 x2*, turn internet on, and attach the positions dataset. If no dataset is attached, the notebook fetches the positions from this repository.
-2. For a trial, set `TOTAL_BUDGET_HOURS = 0.5` in the first code cell and run all cells. The log shows the seconds each position takes. (With `TOP_NODES = None` it also prints how many hours `TARGET_POSITIONS` positions would take at each top level.)
-3. For the full run, set `TOTAL_BUDGET_HOURS = 8.0` and use *Save Version → Save & Run All*.
+2. For a trial, set `TOTAL_BUDGET_HOURS = 1.0` in the first code cell and run all cells. The log shows the seconds each position takes (about 220 s on average per engine at 10,000 nodes; two engines run at once). (With `TOP_NODES = None` it also prints how many hours `TARGET_POSITIONS` positions would take at each top level.)
+3. For the full run, keep `TOTAL_BUDGET_HOURS = 8.5` (the budget counts from the first code cell; Kaggle stops a session at about 9 hours) and use *Save Version → Save & Run All*.
 4. Download `lc0_run.zip` from the notebook's output.
 
 ### Output
