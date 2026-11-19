@@ -11,7 +11,7 @@ Requirements: Python 3 with `numpy`, `scipy`, `matplotlib` and `chess`. Run the 
 | `02_count_distributions.py` | Fits five count models to the number of near-best moves at every level and tolerance. | ~20 s |
 | `03_depth_trends.py` | Fits trend shapes against depth, tests them on held-out depths, and extrapolates to infinite depth with bootstrap error bars. | ~5 min |
 | `05_result_keeping.py` | Reads the infinite-depth limit directly: the share of moves that keep the best result, from each engine's win/draw/loss verdicts. | seconds |
-| `tablebase_query.py` | Asks the Lichess tablebase for the perfect-play result of every move in the positions with at most 7 pieces. Needs internet access; run it on any computer. | ~1 min |
+| `tablebase_query.py` | Asks the Lichess tablebase for the perfect-play result of every move in `tablebase_positions.txt` (the 78 positions of the first Lc0 run with at most 7 pieces; 16 are among the 264 paired positions). Needs internet access: `python tablebase_query.py --positions tablebase_positions.txt`, then put `tablebase_results.csv` in `../results/`. | ~2 min |
 | `04_tablebase_check.py` | Compares the engines and the extrapolation with perfect play in those positions (reads `../results/tablebase_results.csv`). | ~10 s |
 | `figures.py` | Draws the figures in `out/`. | ~10 s |
 
@@ -36,4 +36,4 @@ Requirements: Python 3 with `numpy`, `scipy`, `matplotlib` and `chess`. Run the 
 3. **Depth trends.** Lc0 is flat from 1 to 10,000 nodes, so its limits are close to its current values. Stockfish at e <= 0.05 and 0.10 is still rising at depth 25 (about 0.4 and 0.3 points of share per depth), and the held-out test cannot tell a levelling-off curve from a straight line: the limit is not identified from depths 1-25. At e <= 0.25 both engines are flat (0.425 and 0.403).
 4. **Result-keeping moves (the limit).** 0.562 of the legal moves for Stockfish at depth 25 and 0.545 for Lc0 at 10,000 nodes, about 14 moves per position. The share barely depends on search effort (Stockfish 0.547 at depth 5, Lc0 0.529 at 1 node), the engines give the same verdict for the side to move in 95% of positions, and by verdict the share is 0.42 in won positions, 0.44 in drawn positions and 1 in lost positions (every move loses). Stockfish at depth 12 gives 96.6% of moves the same result as depth 25.
 
-Still to do: the tablebase check (16 positions), and walks down the tree to estimate its growth per move.
+Still to do: the tablebase check (78 positions, 16 of them paired), and walks down the tree to estimate its growth per move.

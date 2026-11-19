@@ -1,11 +1,12 @@
 """Look up the exact result of every legal move in the small positions, using the Lichess tablebase.
 
-Run this on a computer with internet access (it only needs Python; no extra packages):
+Run this on a computer with internet access (it only needs Python; no extra packages), with
+tablebase_positions.txt (the 78 positions with at most 7 pieces from the first Lc0 run) in the same folder:
 
-    python tablebase_query.py
+    python tablebase_query.py --positions tablebase_positions.txt
 
-It looks for positions_analyzed.txt next to this file (or in a folder below it, such as lc0_run), or
-you can name the file:  python tablebase_query.py --positions "C:\\path\\to\\positions_analyzed.txt"
+Without --positions it looks for positions_analyzed.txt next to this file (or in a folder below it,
+such as lc0_run) and uses the positions there that have at most 7 pieces.
 
 For each position with at most 7 pieces it asks https://tablebase.lichess.ovh for the perfect-play
 result of every legal move (about one request per second) and writes, next to this file:
