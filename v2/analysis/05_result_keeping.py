@@ -1,16 +1,13 @@
-"""Step 5: the infinite-depth limit read directly, as the share of moves that keep the result.
+"""Step 5: the share of moves that keep the best result, according to each engine's own verdict.
 
-With perfect play every move's value is exactly a win, draw or loss, so the relative error of every
-move is 0, 1/2 or 1 (or 0 for all when all moves give the same result). For every tolerance below
-1/2 the near-best moves are therefore the same set: the moves that keep the position's best result.
-The smooth depth trends of step 3 cannot reach this limit for Stockfish (its share is still rising
-at depth 25), so here the limit is estimated directly: each move's result is read from the engine's
-own win/draw/loss verdict (the most likely of the three; a majority rule is the robustness check),
-and a position's share is the fraction of moves whose result equals the best one.
+Each move's result (win, draw or loss for the player who makes it) is read from the engine's own
+win/draw/loss figures at that depth or node level (the most likely of the three; a majority rule is the
+robustness check). A position's share is the fraction of moves whose result equals the best one (all
+moves, when every move gives the same result).
 
 Reported for every Stockfish depth and Lc0 node level, by the verdict for the side to move, and as
-agreement between the engines at the top level. The tablebase step (04) checks the verdicts against
-perfect play where that is known.
+agreement between the engines at the top level. Step 4 compares the verdicts with perfect play where
+the tablebases know it.
 Output: out/result_keeping.csv
 """
 import collections

@@ -38,7 +38,6 @@ TOLERANCE_COLORS = {0.05: "#86b6ef", 0.10: "#2a78d6", 0.25: "#104281"}   # ordin
 
 
 def near_best_by_level():
-    keeping = [r for r in read_csv("result_keeping.csv") if r["rule"] == "argmax"]
     fig, axes = plt.subplots(1, 2, figsize=(9, 3.6), sharey=True)
     for ax, run in ((axes[0], c.load_stockfish()), (axes[1], c.load_lc0())):
         counts, n = c.near_best_counts(run)
@@ -46,9 +45,6 @@ def near_best_by_level():
         for ti, t in enumerate(c.THRESHOLDS):
             ax.plot(xs, (counts[:, :, ti] / n[:, None]).mean(axis=0), "-o", color=TOLERANCE_COLORS[t], markersize=2.5,
                     linewidth=1.6, label=f"e ≤ {t}")
-        keep = sorted([r for r in keeping if r["engine"] == run.engine], key=lambda r: int(r["level_index"]))
-        ax.plot(xs, [float(r["share_keeping"]) for r in keep], "--", color=INK, linewidth=1.4,
-                label="keeps the result (limit of every tolerance below ½)")
         if run.level_name == "depth":
             ax.set_xlabel("Stockfish depth")
         else:
@@ -56,11 +52,11 @@ def near_best_by_level():
             ax.set_xlabel("Lc0 nodes per move")
         ax.set_title(run.engine, fontsize=9)
     axes[0].set_ylabel("Share of legal moves")
-    axes[0].set_ylim(0.1, 0.65)
+    axes[0].set_ylim(0.1, 0.5)
     handles, labels = axes[1].get_legend_handles_labels()
     fig.suptitle("Near-best moves by search effort (264 positions; standard error about ±0.02)", fontsize=10)
     fig.tight_layout(rect=(0, 0.1, 1, 1))
-    fig.legend(handles, labels, loc="lower center", ncol=4, frameon=False, fontsize=8)
+    fig.legend(handles, labels, loc="lower center", ncol=3, frameon=False, fontsize=8)
     fig.savefig(c.OUT / "near_best_by_level.png", dpi=200)
     plt.close(fig)
 
@@ -73,26 +69,12 @@ def share_curves(errors, grid):
     return np.mean([(e[None, :] <= grid[:, None] + 1e-12).mean(axis=1) for e in errors], axis=0)
 
 
-def limit_errors(wdl_results):
-    """Per-position errors at infinite depth from win/draw/loss results (1 / 0.5 / 0): each e is 0, 1/2 or 1."""
-    out = []
-    for r in wdl_results:
-        best, worst = r.max(), r.min()
-        out.append(np.zeros(len(r)) if best == worst else (best - r) / (best - worst))
-    return out
-
-
 def share_by_tolerance():
-    """Share of legal moves with relative error <= t, against t, at five levels per engine, plus the
-    infinite-depth curve estimated from each engine's own win/draw/loss verdicts at its top level."""
-    rk = importlib.import_module("05_result_keeping")
+    """Share of legal moves with relative error <= t, against t, at five levels per engine."""
     grid = np.concatenate([[0.0], np.linspace(1e-4, 1.0, 600)])
     fig, axes = plt.subplots(2, 2, figsize=(9.5, 6.4), sharey="row")
-    for col, (run, zip_path, level_col, offset) in enumerate(((c.load_stockfish(), c.SF_RUN, "depth", 1),
-                                                               (c.load_lc0(), c.LC0_RUN, "level", 0))):
+    for col, run in enumerate((c.load_stockfish(), c.load_lc0())):
         xs = run.x()
-        wdl = rk.load_wdl(zip_path, level_col, offset)
-        lim = share_curves(limit_errors([rk.results(wdl[p])[-1] for p in run.pos_ids]), grid)
         picks = [0, 6, 12, 18, 24]
         curves = [(run.levels[li], share_curves([c.relative_errors(xs[p][li:li + 1])[0] for p in run.pos_ids], grid))
                   for li in picks]
@@ -101,8 +83,6 @@ def share_by_tolerance():
             for (level, y), color in zip(curves, LEVEL_COLORS):
                 name = f"depth {level}" if run.level_name == "depth" else f"{level:,} node{'s' if level > 1 else ''}"
                 ax.plot(grid, y, color=color, linewidth=1.8, label=name)
-            ax.step(grid, lim, where="post", color=INK, linestyle="--", linewidth=1.3,
-                    label="infinite depth (estimated)")
             ax.set_xlim(0, xmax)
             for t in c.THRESHOLDS:
                 if t <= xmax:
@@ -111,7 +91,7 @@ def share_by_tolerance():
                 ax.set_title(run.engine, fontsize=10)
                 ax.set_ylim(0, 1.02)
             else:
-                ax.set_ylim(0, 0.7)
+                ax.set_ylim(0, 0.5)
                 ax.set_xlabel("error tolerance t")
         axes[0, col].legend(loc="upper left", frameon=False, fontsize=7.5, ncol=2, columnspacing=1.2)
     axes[0, 0].set_ylabel("share of legal moves with e ≤ t")

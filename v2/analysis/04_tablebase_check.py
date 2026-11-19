@@ -1,4 +1,4 @@
-"""Step 4: check the infinite-depth picture against perfect play, in positions with <= 7 pieces.
+"""Step 4: compare the engines with perfect play, in positions with <= 7 pieces.
 
 Reads tablebase_results.csv (made by tablebase_query.py on a computer with internet access, from
 tablebase_positions.txt: the 78 positions of the first Lc0 run with at most 7 pieces, 16 of which are
@@ -16,7 +16,6 @@ Compares with perfect play:
   - on the 16 paired positions: both engines' near-best sets at every level, and their result-keeping
     sets read from their win/draw/loss verdicts (step 5);
   - on all 78 positions: Lc0's result-keeping sets at 1,000 nodes (first run);
-  - whether the Stockfish depth trend, fitted on the paired positions, points at the exact share.
 Output: out/tablebase_check.csv, printed summary.
 """
 import collections
@@ -28,7 +27,6 @@ import numpy as np
 
 import common as c
 
-trends = importlib.import_module("03_depth_trends")
 rk = importlib.import_module("05_result_keeping")
 
 MOVER_VALUE = {"loss": 1.0, "maybe-loss": 1.0, "win": 0.0, "maybe-win": 0.0, "draw": 0.5,
@@ -124,17 +122,6 @@ def main():
     c.write_csv(c.OUT / "tablebase_check.csv", rows,
                 ["engine", "rule", "level_index", "level", "positions", "share_engine", "share_exact", "precision",
                  "recall", "verdict_right"])
-
-    print("\nStockfish trend fitted on the paired positions (depths 5-25), extrapolated, against the exact share")
-    eng = trends.Engine(sf.subset(pids))
-    q = eng.quantities(np.arange(len(pids)), ("mean_count",))
-    for ti, t in enumerate(c.THRESHOLDS):
-        y = q["mean_share"][:, ti]
-        out = []
-        for form in ("constant", "linear", "exponential", "power"):
-            params, lim, ident = trends.fit_form(form, eng.x[eng.use], y[eng.use])
-            out.append(f"{form} {'-' if lim is None or not ident else f'{lim:.3f}'}")
-        print(f"  e<={t}: depth 25 {y[-1]:.3f} | limits: " + ", ".join(out) + f" | exact {ex_share(pids):.3f}")
 
 
 if __name__ == "__main__":
