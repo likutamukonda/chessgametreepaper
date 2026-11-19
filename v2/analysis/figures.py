@@ -103,6 +103,48 @@ def share_by_tolerance():
     return curves
 
 
+def error_fits(snap=0.0):
+    """Observed share-by-tolerance curves at five levels per engine against the fitted ZOI beta and ZOI
+    logit-normal (step 10), each fitted separately at each level. snap > 0: the sensitivity version, with
+    errors within snap of 0 or 1 counted as 0 or 1."""
+    from scipy.special import betainc, logit, ndtr
+    rows = read_csv("error_distribution_fits_snapped.csv" if snap else "error_distribution_fits.csv")
+    grid = np.concatenate([[0.0], np.linspace(1e-4, 0.999, 600)])
+    fix = (lambda e: np.where(e < snap, 0.0, np.where(e > 1 - snap, 1.0, e))) if snap else (lambda e: e)
+    models = {"ZOI beta": lambda t, q: q["p0"] + (1 - q["p0"] - q["p1"]) * betainc(q["a"], q["b"], t),
+              "ZOI logit-normal": lambda t, q: q["p0"] + (1 - q["p0"] - q["p1"]) * ndtr((logit(np.clip(t, 1e-300, 1 - 1e-16)) - q["m"]) / q["s"])}
+    fig, axes = plt.subplots(2, 2, figsize=(9.5, 6.6), sharex=True, sharey=True)
+    for r_i, run in enumerate((c.load_stockfish(), c.load_lc0())):
+        xs = run.x()
+        for li, color in zip((0, 6, 12, 18, 24), LEVEL_COLORS):
+            obs = share_curves([fix(c.relative_errors(xs[p][li:li + 1])[0]) for p in run.pos_ids], grid)
+            name = f"depth {run.levels[li]}" if run.level_name == "depth" else f"{run.levels[li]:,} node{'s' if run.levels[li] > 1 else ''}"
+            for c_i, model in enumerate(models):
+                ax = axes[r_i, c_i]
+                q = json.loads(next(x for x in rows if x["engine"] == run.engine and x["level_index"] == str(li)
+                                    and x["model"] == model)["params"])
+                ax.plot(grid, obs, color=color, linewidth=1.8, label=name)
+                ax.plot(grid, models[model](grid, q), color=color, linewidth=1.3, linestyle=(0, (3, 2)))
+        for c_i, model in enumerate(models):
+            ax = axes[r_i, c_i]
+            ax.set_title(f"{run.engine}: {model}", fontsize=9)
+            ax.set_xlim(0, 1)
+            ax.set_ylim(0, 1)
+            if c_i == 0:
+                ax.set_ylabel("share of legal moves with e ≤ t")
+            if r_i == 1:
+                ax.set_xlabel("error tolerance t")
+            handles, labels = ax.get_legend_handles_labels()
+            style = [plt.Line2D([], [], color=INK2, linewidth=1.8), plt.Line2D([], [], color=INK2, linewidth=1.3, linestyle=(0, (3, 2)))]
+            ax.legend(handles + style, labels + ["observed", "fitted at that level"], loc="upper left",
+                      frameon=False, fontsize=7, ncol=2)
+    fig.suptitle("Observed curves (solid) and the fitted distribution at the same level (dashed)"
+                 + (f"\nerrors within {snap:g} of 0 or 1 counted as 0 or 1" if snap else ""), fontsize=10)
+    fig.tight_layout()
+    fig.savefig(c.OUT / ("error_fits_snapped.png" if snap else "error_fits.png"), dpi=200)
+    plt.close(fig)
+
+
 def bb_parameters():
     rows = [r for r in read_csv("count_fits.csv") if r["model"] == "beta-binomial"]
     fig, axes = plt.subplots(2, 3, figsize=(9.5, 4.6), sharex="col")
@@ -173,7 +215,11 @@ def theta_from_row(model, r):
 
 if __name__ == "__main__":
     import sys
-    which = sys.argv[1:] or ["near_best_by_level", "share_by_tolerance", "bb_parameters", "count_fit_top"]
+    which = sys.argv[1:] or ["near_best_by_level", "share_by_tolerance", "error_fits", "error_fits_snapped", "bb_parameters",
+                             "count_fit_top"]
     for name in which:
-        globals()[name]()
+        if name == "error_fits_snapped":
+            error_fits(snap=1e-3)
+        else:
+            globals()[name]()
         print("wrote", name)
