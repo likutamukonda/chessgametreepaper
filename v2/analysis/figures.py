@@ -65,6 +65,64 @@ def near_best_by_level():
     plt.close(fig)
 
 
+LEVEL_COLORS = ["#86b6ef", "#5598e7", "#2a78d6", "#1c5cab", "#104281"]   # ordinal blue ramp, steps 250-650
+
+
+def share_curves(errors, grid):
+    """errors: list of per-position arrays of e -> average over positions of the share with e <= t, for t in grid."""
+    return np.mean([(e[None, :] <= grid[:, None] + 1e-12).mean(axis=1) for e in errors], axis=0)
+
+
+def limit_errors(wdl_results):
+    """Per-position errors at infinite depth from win/draw/loss results (1 / 0.5 / 0): each e is 0, 1/2 or 1."""
+    out = []
+    for r in wdl_results:
+        best, worst = r.max(), r.min()
+        out.append(np.zeros(len(r)) if best == worst else (best - r) / (best - worst))
+    return out
+
+
+def share_by_tolerance():
+    """Share of legal moves with relative error <= t, against t, at five levels per engine, plus the
+    infinite-depth curve estimated from each engine's own win/draw/loss verdicts at its top level."""
+    rk = importlib.import_module("05_result_keeping")
+    grid = np.concatenate([[0.0], np.linspace(1e-4, 1.0, 600)])
+    fig, axes = plt.subplots(2, 2, figsize=(9.5, 6.4), sharey="row")
+    for col, (run, zip_path, level_col, offset) in enumerate(((c.load_stockfish(), c.SF_RUN, "depth", 1),
+                                                               (c.load_lc0(), c.LC0_RUN, "level", 0))):
+        xs = run.x()
+        wdl = rk.load_wdl(zip_path, level_col, offset)
+        lim = share_curves(limit_errors([rk.results(wdl[p])[-1] for p in run.pos_ids]), grid)
+        picks = [0, 6, 12, 18, 24]
+        curves = [(run.levels[li], share_curves([c.relative_errors(xs[p][li:li + 1])[0] for p in run.pos_ids], grid))
+                  for li in picks]
+        for row, xmax in enumerate((1.0, 0.25)):
+            ax = axes[row, col]
+            for (level, y), color in zip(curves, LEVEL_COLORS):
+                name = f"depth {level}" if run.level_name == "depth" else f"{level:,} node{'s' if level > 1 else ''}"
+                ax.plot(grid, y, color=color, linewidth=1.8, label=name)
+            ax.step(grid, lim, where="post", color=INK, linestyle="--", linewidth=1.3,
+                    label="infinite depth (estimated)")
+            ax.set_xlim(0, xmax)
+            for t in c.THRESHOLDS:
+                if t <= xmax:
+                    ax.axvline(t, color=GRID, linewidth=1.0, zorder=0)
+            if row == 0:
+                ax.set_title(run.engine, fontsize=10)
+                ax.set_ylim(0, 1.02)
+            else:
+                ax.set_ylim(0, 0.7)
+                ax.set_xlabel("error tolerance t")
+        axes[0, col].legend(loc="upper left", frameon=False, fontsize=7.5, ncol=2, columnspacing=1.2)
+    axes[0, 0].set_ylabel("share of legal moves with e ≤ t")
+    axes[1, 0].set_ylabel("share of legal moves with e ≤ t\n(tolerances up to 0.25)")
+    fig.suptitle("Share of moves within an error tolerance, by search effort (264 positions, common scale)", fontsize=10)
+    fig.tight_layout()
+    fig.savefig(c.OUT / "share_by_tolerance.png", dpi=200)
+    plt.close(fig)
+    return curves
+
+
 def bb_parameters():
     rows = [r for r in read_csv("count_fits.csv") if r["model"] == "beta-binomial"]
     fig, axes = plt.subplots(2, 3, figsize=(9.5, 4.6), sharex="col")
@@ -135,7 +193,7 @@ def theta_from_row(model, r):
 
 if __name__ == "__main__":
     import sys
-    which = sys.argv[1:] or ["near_best_by_level", "bb_parameters", "count_fit_top"]
+    which = sys.argv[1:] or ["near_best_by_level", "share_by_tolerance", "bb_parameters", "count_fit_top"]
     for name in which:
         globals()[name]()
         print("wrote", name)
