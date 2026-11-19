@@ -34,43 +34,33 @@ def read_csv(name):
         return list(csv.DictReader(fh))
 
 
+TOLERANCE_COLORS = {0.05: "#86b6ef", 0.10: "#2a78d6", 0.25: "#104281"}   # ordinal blue ramp, steps 250/450/650
+
+
 def near_best_by_level():
-    fits = read_csv("depth_trend_fits.csv")
-    limits = read_csv("limits.csv")
-    fig, axes = plt.subplots(1, 2, figsize=(9, 3.4), sharey=True)
-    for ax, run, color in ((axes[0], c.load_stockfish(), SF_COLOR), (axes[1], c.load_lc0(), LC0_COLOR)):
-        eng = tr.Engine(run)
-        counts, n = eng.counts, eng.n_legal
-        share = counts[:, :, 1] / n[:, None]
-        mean = share.mean(axis=0)
-        se = share.std(axis=0, ddof=1) / np.sqrt(len(n))
+    keeping = [r for r in read_csv("result_keeping.csv") if r["rule"] == "argmax"]
+    fig, axes = plt.subplots(1, 2, figsize=(9, 3.6), sharey=True)
+    for ax, run in ((axes[0], c.load_stockfish()), (axes[1], c.load_lc0())):
+        counts, n = c.near_best_counts(run)
         xs = np.array(run.levels, float)
-        ax.fill_between(xs, mean - 1.96 * se, mean + 1.96 * se, color=color, alpha=0.15, linewidth=0)
-        ax.plot(xs, mean, "o", color=color, markersize=3.5, label=f"{run.engine}, measured (95% band)")
-        sel = next(r for r in fits if r["engine"] == run.engine and r["threshold"] == "0.1"
-                   and r["quantity"] == "mean_share" and r["selected"] == "True")
-        lim = next(r for r in limits if r["engine"] == run.engine and r["threshold"] == "0.1" and r["quantity"] == "mean_share")
-        p_all = tr.fit_form(sel["shape"], eng.x[eng.use], mean[eng.use])[0]
-        xx = np.linspace(eng.x[eng.use].min(), eng.x[eng.use].max() * (2.2 if run.level_name == "depth" else 1.15), 200)
-        ax.plot(10 ** xx if run.level_name == "nodes" else xx, tr.predict(sel["shape"], p_all, xx), "-", color=INK2,
-                linewidth=1.2, label=f"selected trend ({sel['shape']})")
-        if lim["limit"]:
-            ax.axhline(float(lim["limit"]), color=INK2, linestyle=":", linewidth=1.2,
-                       label=f"limit {float(lim['limit']):.3f} [{float(lim['limit_lo95']):.3f}, {float(lim['limit_hi95']):.3f}]")
+        for ti, t in enumerate(c.THRESHOLDS):
+            ax.plot(xs, (counts[:, :, ti] / n[:, None]).mean(axis=0), "-o", color=TOLERANCE_COLORS[t], markersize=2.5,
+                    linewidth=1.6, label=f"e ≤ {t}")
+        keep = sorted([r for r in keeping if r["engine"] == run.engine], key=lambda r: int(r["level_index"]))
+        ax.plot(xs, [float(r["share_keeping"]) for r in keep], "--", color=INK, linewidth=1.4,
+                label="keeps the result (limit of every tolerance below ½)")
         if run.level_name == "depth":
-            ax.axvspan(20.5, 25.5, color=GRID, alpha=0.5, linewidth=0)
-            ax.text(23, 0.205, "held out", ha="center", color=INK2, fontsize=8)
             ax.set_xlabel("Stockfish depth")
         else:
             ax.set_xscale("log")
-            ax.axvspan(1200, 12000, color=GRID, alpha=0.5, linewidth=0)
-            ax.text(3500, 0.205, "held out", ha="center", color=INK2, fontsize=8)
             ax.set_xlabel("Lc0 nodes per move")
-        ax.legend(loc="upper left", frameon=False, fontsize=7.5)
-    axes[0].set_ylabel("Share of legal moves with e ≤ 0.10")
-    axes[0].set_ylim(0.2, 0.42)
-    fig.suptitle("Near-best moves by search effort (264 positions, common scale)", fontsize=10)
-    fig.tight_layout()
+        ax.set_title(run.engine, fontsize=9)
+    axes[0].set_ylabel("Share of legal moves")
+    axes[0].set_ylim(0.1, 0.65)
+    handles, labels = axes[1].get_legend_handles_labels()
+    fig.suptitle("Near-best moves by search effort (264 positions; standard error about ±0.02)", fontsize=10)
+    fig.tight_layout(rect=(0, 0.1, 1, 1))
+    fig.legend(handles, labels, loc="lower center", ncol=4, frameon=False, fontsize=8)
     fig.savefig(c.OUT / "near_best_by_level.png", dpi=200)
     plt.close(fig)
 

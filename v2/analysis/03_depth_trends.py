@@ -43,8 +43,9 @@ LIMITED = ("constant", "exponential", "power")
 B_FAST, B_BB, SEED = 1000, 200, 20261119
 
 
-def fit_form(form, x, y):
-    """Least-squares fit; returns (params, limit or None, identified flag)."""
+def fit_form(form, x, y, p0=None):
+    """Least-squares fit; returns (params, limit or None, identified flag).
+    p0: a starting point (used for the bootstrap refits, which start from the full-data fit)."""
     if form == "constant":
         return [float(y.mean())], float(y.mean()), True
     if form == "linear":
@@ -52,11 +53,15 @@ def fit_form(form, x, y):
         return [float(a), float(b)], None, False
     f = FORMS[form]
     span = float(y[-1] - y[0]) or 1e-3
+    if p0 is not None:
+        starts = [list(p0)]
+    else:
+        starts = [[float(y[-1]), span, rate] for rate in ((0.05, 0.2, 1.0) if form == "exponential" else (0.2, 1.0, 3.0))]
     best = None
-    for rate in ((0.05, 0.2, 1.0) if form == "exponential" else (0.2, 1.0, 3.0)):
+    for start in starts:
+        start = [start[0], start[1], min(max(start[2], RATE_MIN * 1.01), 9.99)]
         try:
-            p, _ = curve_fit(f, x, y, p0=[float(y[-1]), span, rate],
-                             bounds=([-1e3, -1e3, RATE_MIN], [1e3, 1e3, 10.0]), maxfev=20000)
+            p, _ = curve_fit(f, x, y, p0=start, bounds=([-1e3, -1e3, RATE_MIN], [1e3, 1e3, 10.0]), maxfev=5000)
         except (RuntimeError, ValueError):
             continue
         sse = float(np.sum((f(x, *p) - y) ** 2))
@@ -144,7 +149,7 @@ def analyse(eng, qty_all, qname, ti, boot_series):
             continue
         lims = []
         for ys in boot_series:
-            p, lim, ident = fit_form(f, x[eng.use], ys[eng.use])
+            p, lim, ident = fit_form(f, x[eng.use], ys[eng.use], p0=fits[f]["params_all"] if f != "constant" else None)
             if lim is not None and ident:
                 lims.append(lim)
         fits[f]["boot"] = np.array(lims)

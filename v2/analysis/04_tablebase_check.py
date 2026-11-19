@@ -87,6 +87,29 @@ def main():
                 ["engine", "level_index", "level", "threshold", "share_engine", "share_exact",
                  "best_move_keeps_result", "precision", "recall"])
 
+    # Step 5 reads each move's result from the engine's own win/draw/loss: is that right here?
+    rk = importlib.import_module("05_result_keeping")
+    print("\nResult-keeping moves read from the engines' win/draw/loss (step 5) against perfect play")
+    print(f"{'engine':<10}{'level':>7} {'share':>7} {'exact':>7} {'verdict right':>14} {'precision':>10} {'recall':>8}")
+    for name, zip_path, col, off, run in (("Stockfish", c.SF_RUN, "depth", 1, sf), ("Lc0", c.LC0_RUN, "level", 0, lc)):
+        wdl = rk.load_wdl(zip_path, col, off)
+        for li in ((7, 11, 15, 19, 24) if name == "Stockfish" else (0, 12, 18, 24)):
+            shares, right, prec, rec = [], [], [], []
+            for p in pids:
+                res = rk.results(wdl[p])[li]
+                kept = {m for m, v in zip(run.moves[p], res) if v == res.max()}
+                shares.append(len(kept) / len(run.moves[p]))
+                right.append(res.max() == max(tb[p].values()))
+                prec.append(len(kept & exact[p]) / len(kept))
+                rec.append(len(kept & exact[p]) / len(exact[p]))
+                rows.append([name + " (win/draw/loss)", li, run.levels[li], "result", round(shares[-1], 4),
+                             round(len(exact[p]) / len(run.moves[p]), 4), int(right[-1]), round(prec[-1], 4), round(rec[-1], 4)])
+            print(f"{name:<10}{run.levels[li]:>7} {np.mean(shares):>7.3f} {exact_share.mean():>7.3f} "
+                  f"{np.mean(right):>14.2f} {np.mean(prec):>10.2f} {np.mean(rec):>8.2f}")
+    c.write_csv(c.OUT / "tablebase_check.csv", rows,
+                ["engine", "level_index", "level", "threshold", "share_engine", "share_exact",
+                 "best_move_keeps_result", "precision", "recall"])
+
     # Does the Stockfish depth trend, fitted on these positions only, point at the exact share?
     print("\nStockfish trend fitted on these positions (depths 5-25), extrapolated, against the exact share")
     eng = trends.Engine(sf.subset(pids))
