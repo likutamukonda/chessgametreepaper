@@ -16,6 +16,7 @@ Requirements: Python 3 with `numpy`, `scipy`, `matplotlib` and `chess`. Run the 
 | `08_zoib_look.py` | A first, pooled fit of the zero-one-inflated beta to the relative error at five levels per engine. | seconds |
 | `09_half_tolerance_check.py` | The share of moves with e <= 1/2 across scales, depths and engines. | seconds |
 | `10_error_distribution_fits.py` | Fits candidate distributions to the relative error at every level separately (pooled over positions, each position weighted equally) and compares them; also a sensitivity version with errors within 0.001 of 0 or 1 counted as 0 or 1. | ~15 s |
+| `11_stockfish_parameters.py` | Stockfish only: every parameter of the zero-one-inflated beta and logit-normal against depth, with 95% bootstrap bands; the logit-normal also with near-ties (within 0.001 of 0 or 1) counted as ties. | ~10 s |
 | `tablebase_query.py` | Asks the Lichess tablebase for the perfect-play result of every move in `tablebase_positions.txt` (the 78 positions of the first Lc0 run with at most 7 pieces; 16 are among the 264 paired positions). Needs internet access: `python tablebase_query.py --positions tablebase_positions.txt`, then put `tablebase_results.csv` in `../results/`. | ~2 min |
 | `04_tablebase_check.py` | Compares the engines and the extrapolation with perfect play in those positions (reads `../results/tablebase_results.csv`). | ~10 s |
 | `figures.py` | Draws the figures in `out/`. | ~10 s |
