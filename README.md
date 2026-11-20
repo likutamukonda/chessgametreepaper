@@ -8,7 +8,7 @@ Code and data for *Rational Pruning and Structural Decomposition of the Chess Ga
 |---|---|
 | `data/` | `optimal_positions.zip`: 1,000,000 positions sampled from TCEC engine games after the opening book, one FEN per line (board, side to move, castling rights, en passant square). |
 | `v1_first_draft/` | The notebooks, scripts and results behind the October 2026 draft, unchanged. |
-| `v2/` | The reworked pipeline. So far: the Lc0 notebook for Kaggle and a checker for its output. |
+| `v2/` | The reworked pipeline: `stockfish_laptop.py` (Stockfish 19 scores every legal move of each position at every depth up to 25, on a laptop; it made `results/stockfish_run_depth25.zip`), the Lc0 notebook for Kaggle and a checker for its output, the run results in `results/`, and the analysis in `analysis/` (see its README). |
 
 About 1.4% of the positions carry castling rights that only exist in Chess960. The v2 pipeline leaves those positions out.
 
