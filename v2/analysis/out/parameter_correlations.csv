@@ -1,0 +1,106 @@
+block,note,a,b,correlation
+"positions, depth 25 (Spearman)",236 positions,p0,p1,0.6064
+"positions, depth 25 (Spearman)",236 positions,p0,middle,-0.8562
+"positions, depth 25 (Spearman)",236 positions,p0,m,-0.076
+"positions, depth 25 (Spearman)",236 positions,p0,s,0.0885
+"positions, depth 25 (Spearman)",236 positions,p0,ties best,0.6821
+"positions, depth 25 (Spearman)",236 positions,p0,ties worst,0.1169
+"positions, depth 25 (Spearman)",236 positions,p0,within 0.10,0.3596
+"positions, depth 25 (Spearman)",236 positions,p0,legal moves,-0.7927
+"positions, depth 25 (Spearman)",236 positions,p0,pieces,-0.5633
+"positions, depth 25 (Spearman)",236 positions,p0,decided,-0.095
+"positions, depth 25 (Spearman)",236 positions,p1,middle,-0.847
+"positions, depth 25 (Spearman)",236 positions,p1,m,0.0782
+"positions, depth 25 (Spearman)",236 positions,p1,s,-0.0401
+"positions, depth 25 (Spearman)",236 positions,p1,ties best,0.1223
+"positions, depth 25 (Spearman)",236 positions,p1,ties worst,0.6846
+"positions, depth 25 (Spearman)",236 positions,p1,within 0.10,0.008
+"positions, depth 25 (Spearman)",236 positions,p1,legal moves,-0.7997
+"positions, depth 25 (Spearman)",236 positions,p1,pieces,-0.6735
+"positions, depth 25 (Spearman)",236 positions,p1,decided,-0.1914
+"positions, depth 25 (Spearman)",236 positions,middle,m,-0.0089
+"positions, depth 25 (Spearman)",236 positions,middle,s,-0.0219
+"positions, depth 25 (Spearman)",236 positions,middle,ties best,-0.5362
+"positions, depth 25 (Spearman)",236 positions,middle,ties worst,-0.5273
+"positions, depth 25 (Spearman)",236 positions,middle,within 0.10,-0.2128
+"positions, depth 25 (Spearman)",236 positions,middle,legal moves,0.7295
+"positions, depth 25 (Spearman)",236 positions,middle,pieces,0.6562
+"positions, depth 25 (Spearman)",236 positions,middle,decided,0.1521
+"positions, depth 25 (Spearman)",236 positions,m,s,-0.431
+"positions, depth 25 (Spearman)",236 positions,m,ties best,-0.0808
+"positions, depth 25 (Spearman)",236 positions,m,ties worst,0.0684
+"positions, depth 25 (Spearman)",236 positions,m,within 0.10,-0.7434
+"positions, depth 25 (Spearman)",236 positions,m,legal moves,-0.0094
+"positions, depth 25 (Spearman)",236 positions,m,pieces,0.0427
+"positions, depth 25 (Spearman)",236 positions,m,decided,-0.2435
+"positions, depth 25 (Spearman)",236 positions,s,ties best,0.1661
+"positions, depth 25 (Spearman)",236 positions,s,ties worst,-0.0359
+"positions, depth 25 (Spearman)",236 positions,s,within 0.10,0.6112
+"positions, depth 25 (Spearman)",236 positions,s,legal moves,0.0084
+"positions, depth 25 (Spearman)",236 positions,s,pieces,-0.1006
+"positions, depth 25 (Spearman)",236 positions,s,decided,0.234
+"positions, depth 25 (Spearman)",236 positions,ties best,ties worst,0.009
+"positions, depth 25 (Spearman)",236 positions,ties best,within 0.10,0.4032
+"positions, depth 25 (Spearman)",236 positions,ties best,legal moves,-0.1949
+"positions, depth 25 (Spearman)",236 positions,ties best,pieces,-0.2432
+"positions, depth 25 (Spearman)",236 positions,ties best,decided,0.0402
+"positions, depth 25 (Spearman)",236 positions,ties worst,within 0.10,-0.1457
+"positions, depth 25 (Spearman)",236 positions,ties worst,legal moves,-0.1994
+"positions, depth 25 (Spearman)",236 positions,ties worst,pieces,-0.3972
+"positions, depth 25 (Spearman)",236 positions,ties worst,decided,-0.0661
+"positions, depth 25 (Spearman)",236 positions,within 0.10,legal moves,-0.1645
+"positions, depth 25 (Spearman)",236 positions,within 0.10,pieces,-0.1868
+"positions, depth 25 (Spearman)",236 positions,within 0.10,decided,0.2877
+"positions, depth 25 (Spearman)",236 positions,legal moves,pieces,0.6286
+"positions, depth 25 (Spearman)",236 positions,legal moves,decided,0.1591
+"positions, depth 25 (Spearman)",236 positions,pieces,decided,-0.0299
+"estimates, depth 5 (Pearson over resamples)",,p0,middle,-0.8451
+"estimates, depth 5 (Pearson over resamples)",,p0,p1,0.4584
+"estimates, depth 5 (Pearson over resamples)",,p0,m,-0.0827
+"estimates, depth 5 (Pearson over resamples)",,p0,s,-0.0569
+"estimates, depth 5 (Pearson over resamples)",,middle,p1,-0.8626
+"estimates, depth 5 (Pearson over resamples)",,middle,m,0.0419
+"estimates, depth 5 (Pearson over resamples)",,middle,s,0.1187
+"estimates, depth 5 (Pearson over resamples)",,p1,m,0.0086
+"estimates, depth 5 (Pearson over resamples)",,p1,s,-0.1436
+"estimates, depth 5 (Pearson over resamples)",,m,s,-0.1656
+"estimates, depth 25 (Pearson over resamples)",,p0,middle,-0.8594
+"estimates, depth 25 (Pearson over resamples)",,p0,p1,0.1103
+"estimates, depth 25 (Pearson over resamples)",,p0,m,0.0097
+"estimates, depth 25 (Pearson over resamples)",,p0,s,0.1227
+"estimates, depth 25 (Pearson over resamples)",,middle,p1,-0.603
+"estimates, depth 25 (Pearson over resamples)",,middle,m,0.0092
+"estimates, depth 25 (Pearson over resamples)",,middle,s,-0.0963
+"estimates, depth 25 (Pearson over resamples)",,p1,m,-0.033
+"estimates, depth 25 (Pearson over resamples)",,p1,s,-0.0042
+"estimates, depth 25 (Pearson over resamples)",,m,s,-0.2714
+infinite-depth levels (Pearson over resamples),170 resamples,p0,middle,-0.2708
+infinite-depth levels (Pearson over resamples),170 resamples,p0,p1,-0.3351
+infinite-depth levels (Pearson over resamples),170 resamples,p0,m,0.1067
+infinite-depth levels (Pearson over resamples),170 resamples,p0,s,0.1494
+infinite-depth levels (Pearson over resamples),170 resamples,p0,within 0.10,0.784
+infinite-depth levels (Pearson over resamples),170 resamples,middle,p1,-0.8162
+infinite-depth levels (Pearson over resamples),170 resamples,middle,m,-0.0399
+infinite-depth levels (Pearson over resamples),170 resamples,middle,s,-0.1757
+infinite-depth levels (Pearson over resamples),170 resamples,middle,within 0.10,-0.0194
+infinite-depth levels (Pearson over resamples),170 resamples,p1,m,-0.025
+infinite-depth levels (Pearson over resamples),170 resamples,p1,s,0.0823
+infinite-depth levels (Pearson over resamples),170 resamples,p1,within 0.10,-0.4515
+infinite-depth levels (Pearson over resamples),170 resamples,m,s,0.2223
+infinite-depth levels (Pearson over resamples),170 resamples,m,within 0.10,-0.3968
+infinite-depth levels (Pearson over resamples),170 resamples,s,within 0.10,0.004
+infinite-depth levels (Spearman over resamples),170 resamples,p0,middle,-0.6604
+infinite-depth levels (Spearman over resamples),170 resamples,p0,p1,0.2233
+infinite-depth levels (Spearman over resamples),170 resamples,p0,m,0.2554
+infinite-depth levels (Spearman over resamples),170 resamples,p0,s,0.2011
+infinite-depth levels (Spearman over resamples),170 resamples,p0,within 0.10,0.2188
+infinite-depth levels (Spearman over resamples),170 resamples,middle,p1,-0.8226
+infinite-depth levels (Spearman over resamples),170 resamples,middle,m,-0.1023
+infinite-depth levels (Spearman over resamples),170 resamples,middle,s,-0.1884
+infinite-depth levels (Spearman over resamples),170 resamples,middle,within 0.10,-0.0617
+infinite-depth levels (Spearman over resamples),170 resamples,p1,m,-0.0525
+infinite-depth levels (Spearman over resamples),170 resamples,p1,s,0.1194
+infinite-depth levels (Spearman over resamples),170 resamples,p1,within 0.10,-0.0863
+infinite-depth levels (Spearman over resamples),170 resamples,m,s,0.2209
+infinite-depth levels (Spearman over resamples),170 resamples,m,within 0.10,-0.7224
+infinite-depth levels (Spearman over resamples),170 resamples,s,within 0.10,-0.0722
