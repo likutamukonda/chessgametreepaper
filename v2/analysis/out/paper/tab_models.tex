@@ -1,0 +1,17 @@
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lcrrrr}
+\toprule
+ & & \multicolumn{2}{c}{Lowest AIC (depths)} & \multicolumn{2}{c}{Median largest gap} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}
+Model & $k$ & Measured & Near-ties & Measured & Near-ties \\
+\midrule
+Zero-one-inflated logit-normal & 4 & 21 & 25 & 0.051 & 0.059 \\
+Zero-one-inflated beta & 4 & 4 & 0 & 0.070 & 0.073 \\
+Ordered beta$^{a}$ & 4 & 0 & 0 & 0.070 & 0.073 \\
+Zero-one-inflated Kumaraswamy & 4 & 0 & 0 & 0.070 & 0.074 \\
+Censored normal & 2 & 0 & 0 & 0.134 & 0.133 \\
+Censored logistic & 2 & 0 & 0 & 0.131 & 0.131 \\
+\midrule
+Two-beta mixture (benchmark)$^{b}$ & 7 & -- & -- & 0.019 & 0.020 \\
+\bottomrule
+\end{tabular}
