@@ -29,9 +29,9 @@ Every script reads the zipped runs from `results/` and writes to `analysis/out/`
 | `04_spike_parameterisation.py` | Which two of p0, p1 and the middle share should carry depth functions. | `spike_parameterisation.csv` |
 | `05_infinite_depth.py` | Why depths 1–4 are left out (horizon effect), the depth functions on depths 5–25, and the distribution at infinite depth with 95% intervals. | `shallow_depths.csv`, `depth_functions.csv`, `infinite_depth.csv` |
 | `06_game_phase.py` | The distribution by number of pieces on the board. | `phase_breakdown.csv` |
-| `07_goodness_of_fit.py` | How well the model fits at each depth (largest and average gap, share of moves misplaced, R² over bands, a Wald test that resamples positions), how well the depth functions fit (R² against a straight line, change from depth 20 to 25), and what p0 and p1 are made of. | `fit_by_depth.csv`, `band_residuals_depth25.csv`, `depth_function_checks.csv`, `p0_p1_split.csv` |
+| `07_goodness_of_fit.py` | How well the model fits at each depth (largest and average gap, share of moves misplaced, R² over bands, a Wald test that resamples positions), the shape of the fitted middle at depth 25, how well the depth functions fit (R² against a straight line, change from depth 20 to 25), and what p0 and p1 are made of. | `fit_by_depth.csv`, `band_residuals_depth25.csv`, `depth_function_checks.csv`, `p0_p1_split.csv` |
 | `08_parameter_correlations.py` | Correlations between the parameters: across positions, between the estimates, and between the infinite-depth levels. | `parameter_correlations.csv` |
-| `09_robustness.py` | Scale steepness, near-ties, the first depth fitted, and Lc0 on the same positions. | `robustness_*.csv` |
+| `09_robustness.py` | Scale steepness (and the check that the two ends do not depend on it), near-ties, the first depth fitted, Lc0 on the same positions, and weighting by moves instead of positions. | `robustness_*.csv` |
 | `10_paper_figures.py` | The figures and LaTeX tables of the paper (reads the outputs of 01–09). | `out/paper/` |
 
 ### Running it

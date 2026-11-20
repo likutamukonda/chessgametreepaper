@@ -2,7 +2,8 @@
 
 1. Scale. The steepness of the expected-score curve is a modelling choice. At depth 25 (near-ties counted as ties):
    the observed share of moves within 0.05, 0.10, 0.25 and 0.5 and the five parameters, for half, one and twice the
-   Lichess steepness, and for Stockfish's own win/draw/loss scale (w + d/2) / 1000.
+   Lichess steepness, and for Stockfish's own win/draw/loss scale (w + d/2) / 1000. Also p0 and p1 as measured (no
+   near-tie rule), which do not depend on the steepness (Proposition 2.5 of the paper) up to floating-point rounding.
 2. Near-ties. The analysis as measured (no snapping) against near-ties counted as ties: the depth-25 parameters, how
    much s moves between consecutive depths, and the levels at infinite depth (both depth functions for s).
    (The model comparison for both versions is in 01_candidate_distributions.py.)
@@ -11,7 +12,11 @@
    share of moves within t against Stockfish at depth 25 (paired bootstrap intervals for the differences), the
    parameters at 1 and at 10,000 nodes, and how far Lc0's distribution moves between 1 and 10,000 nodes (average gap
    between the share curves over t in [0, 1]).
-Outputs: out/robustness_scale.csv, out/robustness_near_ties.csv, out/robustness_first_depth.csv, out/robustness_lc0.csv
+5. Weights. Each position weighted equally (the paper) against each move weighted equally, at depth 25: the shares
+   within t and p0, p1, and the identity  move-weighted share = position-weighted share + Cov(n, S_t) / mean(n)
+   (Remark 7.1 of the paper).
+Outputs: out/robustness_scale.csv, out/robustness_near_ties.csv, out/robustness_first_depth.csv, out/robustness_lc0.csv,
+         out/robustness_weights.csv
 """
 import numpy as np
 
@@ -52,9 +57,14 @@ def scale_check(S):
         reps = [mdl.parameters([per], i) for i in boots]
         for q in ORDER:
             rows.append([name, q, float(par[q][0]), float(np.std([r[q][0] for r in reps], ddof=1))])
+        raw = [c.relative_errors(xs[p][li:li + 1])[0] for p in run.pos_ids]
+        for q, at_end in (("p0 as measured", 0.0), ("p1 as measured", 1.0)):
+            sh = np.array([np.mean(e == at_end) for e in raw])
+            rows.append([name, q, float(sh.mean()), float(np.std([sh[i].mean() for i in boots], ddof=1))])
         get = {r[1]: r[2] for r in rows if r[0] == name}
         print(f"   {name:<24} " + "  ".join(f"within {t:g} {get[f'within {t:g}']:.3f}" for t in TOL) + "   "
-              + "  ".join(f"{q} {get[q]:.3f}" for q in ORDER))
+              + "  ".join(f"{q} {get[q]:.3f}" for q in ORDER)
+              + f"   as measured: p0 {get['p0 as measured']:.4f} p1 {get['p1 as measured']:.4f}")
     c.write_csv(c.OUT / "robustness_scale.csv", [[r[0], r[1], round(r[2], 6), round(r[3], 6)] for r in rows],
                 ["scale", "quantity", "value_depth25", "se"])
 
@@ -119,6 +129,27 @@ def first_depth_check(S):
                 ["first_depth", "s_depth_function"] + [f"{q}_infinite" for q in ORDER] + ["within_0.1_infinite"])
 
 
+def weights_check(S):
+    per = S["per_depth"][S["run"].levels.index(25)]
+    n = np.array([len(e) for e in per], float)
+    rows = []
+    print("\n5. Weights, depth 25: each position equal (paper) against each move equal")
+    for label, t in (("p0", None), ("p1", None)) + tuple((f"within {t:g}", t) for t in TOL):
+        if t is None:
+            S_t = np.array([np.mean(e == (0.0 if label == "p0" else 1.0)) for e in per])
+        else:
+            S_t = shares(per, t)
+        by_position = float(S_t.mean())
+        by_move = float(np.sum(n * S_t) / np.sum(n))
+        cov_term = float(np.mean((n - n.mean()) * (S_t - S_t.mean())) / n.mean())
+        assert abs(by_move - (by_position + cov_term)) < 1e-12
+        rows.append([label, by_position, by_move, cov_term])
+        print(f"   {label:<12} each position equal {by_position:.3f}   each move equal {by_move:.3f}   "
+              f"(difference = Cov(n, S) / mean n = {cov_term:+.3f})")
+    c.write_csv(c.OUT / "robustness_weights.csv", [[r[0]] + [round(v, 6) for v in r[1:]] for r in rows],
+                ["quantity", "each_position_equal", "each_move_equal", "cov_n_share_over_mean_n"])
+
+
 def lc0_check(S):
     run, boots, per_sf = S["run"], S["boots"], S["per_depth"]
     lc = c.load_lc0()
@@ -162,6 +193,7 @@ def main():
     near_ties_check(S)
     first_depth_check(S)
     lc0_check(S)
+    weights_check(S)
 
 
 if __name__ == "__main__":

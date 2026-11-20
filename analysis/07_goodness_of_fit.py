@@ -18,6 +18,7 @@
 Outputs: out/fit_by_depth.csv, out/band_residuals_depth25.csv, out/depth_function_checks.csv, out/p0_p1_split.csv
 """
 import numpy as np
+from scipy.optimize import brentq
 from scipy.stats import chi2
 
 import common as c
@@ -97,6 +98,14 @@ def main():
     middle_obs = sum(r[1] for r in band_rows[1:11])
     print(f"   depth 25, in-between moves within 0.1 of either end: observed {(band_rows[1][1] + band_rows[10][1]) / middle_obs:.3f}, "
           f"model {(band_rows[1][2] + band_rows[10][2]) / par25['middle']:.3f}")
+    # stationary points of the fitted in-between density: tanh(z / 2) = (z - m) / s^2 (Proposition 3.3 of the paper)
+    m25, s25 = par25["m"], par25["s"]
+    h = lambda z: np.tanh(z / 2) - (z - m25) / s25 ** 2
+    grid = np.linspace(-30, 30, 60001)
+    signs = np.sign(h(grid))
+    roots = [brentq(h, grid[i], grid[i + 1]) for i in np.flatnonzero(signs[:-1] * signs[1:] < 0)]
+    print("   depth 25, stationary points of the fitted in-between density at e = "
+          + ", ".join(f"{1 / (1 + np.exp(-z)):.4f}" for z in roots) + f"  (s = {s25:.3f} against sqrt 2 = {np.sqrt(2):.3f})")
 
     # ---- 2. the depth functions
     print(f"\n2. Depth functions on depths {mdl.FIRST}-25: R-squared (plain / weighted) against a straight line, and change near depth 25")

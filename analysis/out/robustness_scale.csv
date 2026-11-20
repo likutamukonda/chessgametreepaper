@@ -8,6 +8,8 @@ steepness 0.5,p1,0.095776,0.008297
 steepness 0.5,middle,0.764885,0.016414
 steepness 0.5,m,-0.649096,0.092296
 steepness 0.5,s,2.503685,0.059169
+steepness 0.5,p0 as measured,0.137486,0.013186
+steepness 0.5,p1 as measured,0.093437,0.0082
 Lichess steepness,within 0.05,0.274916,0.015889
 Lichess steepness,within 0.1,0.333841,0.016207
 Lichess steepness,within 0.25,0.42539,0.016324
@@ -17,6 +19,8 @@ Lichess steepness,p1,0.096996,0.008362
 Lichess steepness,middle,0.763515,0.016254
 Lichess steepness,m,0.071943,0.10703
 Lichess steepness,s,2.860865,0.055406
+Lichess steepness,p0 as measured,0.137486,0.013186
+Lichess steepness,p1 as measured,0.093437,0.0082
 steepness 2,within 0.05,0.255889,0.016214
 steepness 2,within 0.1,0.296503,0.016053
 steepness 2,within 0.25,0.371455,0.016372
@@ -26,6 +30,8 @@ steepness 2,p1,0.157367,0.009753
 steepness 2,middle,0.695569,0.016812
 steepness 2,m,0.997412,0.135342
 steepness 2,s,3.488596,0.060016
+steepness 2,p0 as measured,0.137486,0.013186
+steepness 2,p1 as measured,0.094107,0.00825
 Stockfish win/draw/loss,within 0.05,0.410128,0.021852
 Stockfish win/draw/loss,within 0.1,0.435304,0.021561
 Stockfish win/draw/loss,within 0.25,0.464829,0.021255
@@ -35,3 +41,5 @@ Stockfish win/draw/loss,p1,0.417328,0.019176
 Stockfish win/draw/loss,middle,0.286333,0.015991
 Stockfish win/draw/loss,m,-1.700344,0.194001
 Stockfish win/draw/loss,s,3.090467,0.10912
+Stockfish win/draw/loss,p0 as measured,0.292207,0.022794
+Stockfish win/draw/loss,p1 as measured,0.416354,0.019189
