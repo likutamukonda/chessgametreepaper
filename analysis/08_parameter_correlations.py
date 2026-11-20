@@ -67,6 +67,11 @@ def main():
     rows += matrix_rows("positions, depth 25 (Spearman)", names, rho, f"{ok.sum()} positions")
     show(f"1. Across positions at depth 25 (Spearman; {ok.sum()} positions with at least three moves strictly between)",
          names, rho, width=12)
+    keep = [i for i, k in enumerate(names) if k not in ("m", "s")]
+    rho_all = spearmanr(X[:, keep]).correlation
+    rows += matrix_rows("positions, depth 25, all positions (Spearman)", [names[i] for i in keep], rho_all,
+                        f"{len(X)} positions")
+    show(f"   The same without m and s, over all {len(X)} positions", [names[i] for i in keep], rho_all, width=12)
 
     # ---- 2. between the estimates, over bootstrap resamples (with the model share within 0.10 they imply)
     names = ORDER + ("within 0.10",)

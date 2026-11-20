@@ -62,6 +62,13 @@ def scale_check(S):
 def near_ties_check(S):
     rows = []
     print("\n2. Near-ties counted as ties against as measured")
+    raw = mdl.errors_by_depth(S["run"], S["xs"], near_ties=False)
+    for dep in (5, 25):
+        per = raw[S["run"].levels.index(dep)]
+        touched = float(np.mean([np.mean(((e > 0) & (e < mdl.SNAP)) | ((e < 1) & (e > 1 - mdl.SNAP))) for e in per]))
+        rows.append(["near-ties as ties", f"share of moves within {mdl.SNAP:g} of 0 or 1 but not at it, depth {dep}",
+                     touched, "", "", ""])
+        print(f"   depth {dep}: the rule moves {touched:.2%} of moves (each position weighted equally)")
     for name, T in (("near-ties as ties", S), ("as measured", mdl.limits(near_ties=False))):
         d, full, se = T["d"], T["full"], T["se"]
         i25 = list(d).index(25)

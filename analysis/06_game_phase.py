@@ -1,11 +1,12 @@
-"""6. The distribution by game phase (Stockfish, near-ties counted as ties). Table 4 of the paper.
+"""6. The sample, and the distribution by game phase (Stockfish, near-ties counted as ties).
 
+The sample: number of positions and moves, pieces on the board and legal moves per position.
 Positions are grouped by the number of pieces on the board, kings and pawns included: 12 or fewer (endgames),
 13-22 (middlegames) and 23 or more (openings and early middlegames, after the book). For each group, at depths 5 and
 25: number of positions, mean number of legal moves, the five parameters of the zero-one-inflated logit-normal and
 the observed share of moves within 0.05, 0.10, 0.25 and 0.5, with bootstrap standard errors (200 resamples of the
 positions within each group; for all positions together, the resamples used everywhere else).
-Output: out/phase_breakdown.csv
+Outputs: out/sample.csv, out/phase_breakdown.csv
 """
 import numpy as np
 
@@ -20,6 +21,12 @@ def main():
     run, xs, per_depth = S["run"], S["xs"], S["per_depth"]
     pieces = np.array([c.piece_count(run.fens[p]) for p in run.pos_ids])
     n_legal = np.array([xs[p].shape[1] for p in run.pos_ids])
+    sample = [["positions", len(pieces)], ["legal moves in all", int(n_legal.sum())],
+              ["pieces, median", float(np.median(pieces))], ["pieces, fewest", int(pieces.min())],
+              ["pieces, most", int(pieces.max())], ["legal moves, mean", round(float(n_legal.mean()), 3)],
+              ["legal moves, fewest", int(n_legal.min())], ["legal moves, most", int(n_legal.max())]]
+    c.write_csv(c.OUT / "sample.csv", sample, ["quantity", "value"])
+    print("Sample: " + ", ".join(f"{k} {v}" for k, v in sample))
     rng = np.random.default_rng(mdl.SEED)
     rows = []
     for name, lo, hi in mdl.PHASES + (("all", 0, 32),):

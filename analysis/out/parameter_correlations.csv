@@ -54,6 +54,42 @@ block,note,a,b,correlation
 "positions, depth 25 (Spearman)",236 positions,legal moves,pieces,0.6286
 "positions, depth 25 (Spearman)",236 positions,legal moves,decided,0.1591
 "positions, depth 25 (Spearman)",236 positions,pieces,decided,-0.0299
+"positions, depth 25, all positions (Spearman)",264 positions,p0,p1,0.4615
+"positions, depth 25, all positions (Spearman)",264 positions,p0,middle,-0.8769
+"positions, depth 25, all positions (Spearman)",264 positions,p0,ties best,0.6015
+"positions, depth 25, all positions (Spearman)",264 positions,p0,ties worst,0.0613
+"positions, depth 25, all positions (Spearman)",264 positions,p0,within 0.10,0.4652
+"positions, depth 25, all positions (Spearman)",264 positions,p0,legal moves,-0.8254
+"positions, depth 25, all positions (Spearman)",264 positions,p0,pieces,-0.6251
+"positions, depth 25, all positions (Spearman)",264 positions,p0,decided,-0.2481
+"positions, depth 25, all positions (Spearman)",264 positions,p1,middle,-0.6763
+"positions, depth 25, all positions (Spearman)",264 positions,p1,ties best,0.158
+"positions, depth 25, all positions (Spearman)",264 positions,p1,ties worst,0.6534
+"positions, depth 25, all positions (Spearman)",264 positions,p1,within 0.10,-0.0731
+"positions, depth 25, all positions (Spearman)",264 positions,p1,legal moves,-0.6472
+"positions, depth 25, all positions (Spearman)",264 positions,p1,pieces,-0.5584
+"positions, depth 25, all positions (Spearman)",264 positions,p1,decided,-0.1437
+"positions, depth 25, all positions (Spearman)",264 positions,middle,ties best,-0.4662
+"positions, depth 25, all positions (Spearman)",264 positions,middle,ties worst,-0.4329
+"positions, depth 25, all positions (Spearman)",264 positions,middle,within 0.10,-0.3218
+"positions, depth 25, all positions (Spearman)",264 positions,middle,legal moves,0.7733
+"positions, depth 25, all positions (Spearman)",264 positions,middle,pieces,0.6989
+"positions, depth 25, all positions (Spearman)",264 positions,middle,decided,0.3166
+"positions, depth 25, all positions (Spearman)",264 positions,ties best,ties worst,0.0344
+"positions, depth 25, all positions (Spearman)",264 positions,ties best,within 0.10,0.3942
+"positions, depth 25, all positions (Spearman)",264 positions,ties best,legal moves,-0.1771
+"positions, depth 25, all positions (Spearman)",264 positions,ties best,pieces,-0.2509
+"positions, depth 25, all positions (Spearman)",264 positions,ties best,decided,0.052
+"positions, depth 25, all positions (Spearman)",264 positions,ties worst,within 0.10,-0.1758
+"positions, depth 25, all positions (Spearman)",264 positions,ties worst,legal moves,-0.141
+"positions, depth 25, all positions (Spearman)",264 positions,ties worst,pieces,-0.3265
+"positions, depth 25, all positions (Spearman)",264 positions,ties worst,decided,-0.0426
+"positions, depth 25, all positions (Spearman)",264 positions,within 0.10,legal moves,-0.2738
+"positions, depth 25, all positions (Spearman)",264 positions,within 0.10,pieces,-0.2856
+"positions, depth 25, all positions (Spearman)",264 positions,within 0.10,decided,0.117
+"positions, depth 25, all positions (Spearman)",264 positions,legal moves,pieces,0.6663
+"positions, depth 25, all positions (Spearman)",264 positions,legal moves,decided,0.3009
+"positions, depth 25, all positions (Spearman)",264 positions,pieces,decided,0.1226
 "estimates, depth 5 (Pearson over resamples)",200 resamples,p0,p1,0.4584
 "estimates, depth 5 (Pearson over resamples)",200 resamples,p0,middle,-0.8451
 "estimates, depth 5 (Pearson over resamples)",200 resamples,p0,m,-0.0827

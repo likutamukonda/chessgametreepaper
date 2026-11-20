@@ -59,7 +59,7 @@ def style():
 
 def save(fig, name):
     OUT.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT / f"{name}.pdf")
+    fig.savefig(OUT / f"{name}.pdf", metadata={"CreationDate": None})      # no timestamp: same file on every run
     fig.savefig(OUT / f"{name}.png", dpi=200)
     plt.close(fig)
 
@@ -367,6 +367,11 @@ def tab_parameters(S, inf, bl, inf_alt, bl_alt):
     write("tab_parameters.tex", lines)
 
 
+def p_cell(p):
+    """Bootstrap p-value; 0.005 is the smallest value 200 resamples can give."""
+    return r"$<$0.01" if p <= 1 / mdl.B + 1e-12 else f"{p:.2f}"
+
+
 def tab_depth_functions():
     rows = read("depth_function_checks.csv")
     label = {("p0", "logistic"): r"$p_0$", ("middle", "logistic"): r"$1-p_0-p_1$",
@@ -384,12 +389,12 @@ def tab_depth_functions():
         shown_above = key == ("s", "logistic")          # the change in s is the same data, shown once
         change = " & & " if shown_above else (
             f"{fmt(float(r['change']))} & [{fmt(float(r['change_lo95']))}, {fmt(float(r['change_hi95']))}] & "
-            f"{float(r['p_no_change']):.3f}")
+            f"{p_cell(float(r['p_no_change']))}")
         lines.append(f"{label[key]} & {shape[r['depth_function']]} & {float(r['r2_weighted']):.3f} & "
                      f"{float(r['r2_line_weighted']):.3f} & {change} \\\\")
     r = next(r for r in rows if r["change_depths"] == "22-25")
     lines += [r"\midrule", f"$s$, depth 22 to 25 & & & & {fmt(float(r['change']))} & "
-              f"[{fmt(float(r['change_lo95']))}, {fmt(float(r['change_hi95']))}] & {float(r['p_no_change']):.3f} \\\\",
+              f"[{fmt(float(r['change_lo95']))}, {fmt(float(r['change_hi95']))}] & {p_cell(float(r['p_no_change']))} \\\\",
               r"\bottomrule", r"\end{tabular}"]
     write("tab_depth_functions.tex", lines)
     return rows

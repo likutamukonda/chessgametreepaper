@@ -1,4 +1,6 @@
 version,quantity,value,se,lo95,hi95
+near-ties as ties,"share of moves within 0.001 of 0 or 1 but not at it, depth 5",0.001492,,,
+near-ties as ties,"share of moves within 0.001 of 0 or 1 but not at it, depth 25",0.005563,,,
 near-ties as ties,p0 at depth 25,0.139489,0.013046,,
 near-ties as ties,p1 at depth 25,0.096996,0.008362,,
 near-ties as ties,middle at depth 25,0.763515,0.016254,,
