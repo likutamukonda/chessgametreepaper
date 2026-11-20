@@ -1,0 +1,27 @@
+s_shape,quantity,parameter_or_t,model_at_depth_25,infinite_depth,lo95,hi95,share_of_resamples_used
+gamma kernel,parameter,p0,0.13949,0.14339,0.10777,0.25474,0.85
+gamma kernel,parameter,middle,0.76352,0.71631,0.31229,0.78776,0.85
+gamma kernel,parameter,p1,0.097,0.1403,0.07385,0.48411,0.85
+gamma kernel,parameter,m,0.07194,0.25631,-0.1388,8.94139,0.85
+gamma kernel,parameter,s,2.86086,2.51771,2.38594,2.63187,0.85
+gamma kernel,share within t,0.0,0.13949,0.14339,0.10777,0.25474,0.85
+gamma kernel,share within t,0.05,0.25085,0.21632,0.1358,0.31376,0.85
+gamma kernel,share within t,0.1,0.30276,0.26151,0.14409,0.34894,0.85
+gamma kernel,share within t,0.25,0.40001,0.35487,0.15387,0.42521,0.85
+gamma kernel,share within t,0.5,0.51359,0.4725,0.16871,0.53645,0.85
+gamma kernel,share within t,0.75,0.62826,0.59539,0.17557,0.66238,0.85
+gamma kernel,share within t,0.9,0.72833,0.70184,0.17831,0.76735,0.85
+gamma kernel,share within t,0.99,0.85954,0.82932,0.20487,0.88901,0.85
+logistic,parameter,p0,0.13949,0.14339,0.10777,0.25474,0.85
+logistic,parameter,middle,0.76352,0.71631,0.31229,0.78776,0.85
+logistic,parameter,p1,0.097,0.1403,0.07385,0.48411,0.85
+logistic,parameter,m,0.07194,0.25631,-0.1388,8.94139,0.85
+logistic,parameter,s,2.86086,2.92808,2.81685,3.07193,0.85
+logistic,share within t,0.0,0.13949,0.14339,0.10777,0.25474,0.85
+logistic,share within t,0.05,0.25085,0.24164,0.14443,0.33,0.85
+logistic,share within t,0.1,0.30276,0.28739,0.14983,0.37383,0.85
+logistic,share within t,0.25,0.40001,0.37388,0.15878,0.43904,0.85
+logistic,share within t,0.5,0.51359,0.47656,0.17536,0.53647,0.85
+logistic,share within t,0.75,0.62826,0.58263,0.17728,0.64543,0.85
+logistic,share within t,0.9,0.72833,0.67797,0.18246,0.74222,0.85
+logistic,share within t,0.99,0.85954,0.81013,0.21883,0.86677,0.85

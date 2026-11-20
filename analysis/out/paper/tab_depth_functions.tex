@@ -1,0 +1,16 @@
+\begin{tabular}{llccccc}
+\toprule
+ & & \multicolumn{2}{c}{Weighted $R^2$} & \multicolumn{3}{c}{Change from depth 20 to 25} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-7}
+Parameter & Depth function & Curve & Line & Change & 95\% interval & $p$ \\
+\midrule
+$p_0$ & S-curve & 0.970 & 0.883 & 0.035 & [0.017, 0.052] & 0.005 \\
+$1-p_0-p_1$ & S-curve & 0.990 & 0.951 & $-$0.041 & [$-$0.058, $-$0.023] & 0.005 \\
+$p_1$ (from the two above) & -- & 0.957 & 0.954 & 0.006 & [$-$0.007, 0.018] & 0.300 \\
+$m$ & S-curve & 0.975 & 0.965 & 0.110 & [0.001, 0.213] & 0.040 \\
+$s$ & gamma kernel & 0.971 & 0.909 & $-$0.059 & [$-$0.146, 0.030] & 0.200 \\
+$s$ & S-curve & 0.965 & 0.909 &  & &  \\
+\midrule
+$s$, depth 22 to 25 & & & & $-$0.079 & [$-$0.149, 0.004] & 0.060 \\
+\bottomrule
+\end{tabular}

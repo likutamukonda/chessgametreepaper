@@ -1,0 +1,18 @@
+parameter,shape,n_params,rms_z_in_sample,rms_z_heldout,level,levels_off,level_lo95,level_hi95,share_levelling_off
+p0,exponential,3,0.79,1.549,1.0,False,,,0.0
+p0,power,3,1.201,2.353,1.0,False,,,0.0
+p0,logistic,4,0.393,1.005,0.1434,True,0.1076,0.3376,0.915
+p0,linear,2,0.774,1.513,,False,,,0.0
+middle,exponential,3,0.574,1.224,0.0,False,,,0.0
+middle,power,3,1.046,2.202,0.0,False,,,0.0
+middle,logistic,4,0.243,1.111,0.7163,True,0.2672,0.787,0.905
+middle,linear,2,0.54,1.143,,False,,,0.0
+m,exponential,3,0.163,0.299,0.3219,True,-0.1259,6.1915,0.825
+m,power,3,0.193,0.354,10.0,False,-0.0391,9.9999,0.185
+m,logistic,4,0.164,0.308,0.2563,True,-0.1398,8.9218,0.995
+m,linear,2,0.192,0.274,,False,,,0.0
+s,exponential,3,0.601,2.124,3.0927,True,2.9215,3.5126,0.995
+s,power,3,0.647,0.8,20.0,False,3.3804,20.0,0.305
+s,logistic,4,0.498,2.377,2.9281,True,2.8222,3.0539,1.0
+s,gamma kernel,4,0.45,2.279,2.5177,True,2.3835,2.6281,1.0
+s,linear,2,0.796,2.164,,False,,,0.0
