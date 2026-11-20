@@ -1,0 +1,41 @@
+version,quantity,value,se,lo95,hi95
+near-ties as ties,p0 at depth 25,0.139489,0.013046,,
+near-ties as ties,p1 at depth 25,0.096996,0.008362,,
+near-ties as ties,middle at depth 25,0.763515,0.016254,,
+near-ties as ties,m at depth 25,0.071943,0.10703,,
+near-ties as ties,s at depth 25,2.860865,0.055406,,
+near-ties as ties,mean |change in s| between consecutive depths 5-25,0.030714,,,
+near-ties as ties,p0 at infinite depth (gamma kernel for s),0.143388,,0.107768,0.254744
+near-ties as ties,p1 at infinite depth (gamma kernel for s),0.1403,,0.073849,0.484109
+near-ties as ties,middle at infinite depth (gamma kernel for s),0.716312,,0.312285,0.787763
+near-ties as ties,m at infinite depth (gamma kernel for s),0.25631,,-0.138804,8.941388
+near-ties as ties,s at infinite depth (gamma kernel for s),2.517711,,2.385936,2.631873
+near-ties as ties,within 0.1 at infinite depth (gamma kernel for s),0.261509,,0.144095,0.348945
+near-ties as ties,resamples with every level (gamma kernel for s),0.85,,,
+near-ties as ties,p0 at infinite depth (logistic for s),0.143388,,0.107768,0.254744
+near-ties as ties,p1 at infinite depth (logistic for s),0.1403,,0.073849,0.484109
+near-ties as ties,middle at infinite depth (logistic for s),0.716312,,0.312285,0.787763
+near-ties as ties,m at infinite depth (logistic for s),0.25631,,-0.138804,8.941388
+near-ties as ties,s at infinite depth (logistic for s),2.928075,,2.816845,3.071926
+near-ties as ties,within 0.1 at infinite depth (logistic for s),0.287391,,0.149828,0.373833
+near-ties as ties,resamples with every level (logistic for s),0.85,,,
+as measured,p0 at depth 25,0.137486,0.013186,,
+as measured,p1 at depth 25,0.093437,0.0082,,
+as measured,middle at depth 25,0.769078,0.016314,,
+as measured,m at depth 25,0.108411,0.113205,,
+as measured,s at depth 25,3.051246,0.093798,,
+as measured,mean |change in s| between consecutive depths 5-25,0.102326,,,
+as measured,p0 at infinite depth (gamma kernel for s),0.151804,,0.110418,0.20936
+as measured,p1 at infinite depth (gamma kernel for s),0.268029,,0.090985,0.670982
+as measured,middle at infinite depth (gamma kernel for s),0.580167,,0.112522,0.781506
+as measured,m at infinite depth (gamma kernel for s),0.314872,,-0.048594,5.892837
+as measured,s at infinite depth (gamma kernel for s),2.552483,,2.388023,2.659062
+as measured,within 0.1 at infinite depth (gamma kernel for s),0.246089,,0.135592,0.28621
+as measured,resamples with every level (gamma kernel for s),0.62,,,
+as measured,p0 at infinite depth (logistic for s),0.151804,,0.110447,0.209153
+as measured,p1 at infinite depth (logistic for s),0.268029,,0.09109,0.661294
+as measured,middle at infinite depth (logistic for s),0.580167,,0.114988,0.781418
+as measured,m at infinite depth (logistic for s),0.314872,,-0.048342,5.846907
+as measured,s at infinite depth (logistic for s),3.115798,,2.970381,3.336789
+as measured,within 0.1 at infinite depth (logistic for s),0.273668,,0.143621,0.319442
+as measured,resamples with every level (logistic for s),0.63,,,
